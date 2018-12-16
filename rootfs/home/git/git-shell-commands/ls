@@ -1,0 +1,5 @@
+#!/bin/sh
+
+source .gitrc
+
+find ${GIT_REPO_PATH} -type d -name "*.git"

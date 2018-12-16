@@ -1,0 +1,36 @@
+#!/bin/sh
+
+source .gitrc
+
+if [ $# -ne 1 ]; then
+	echo -e "\n\tUsage: $(basename $0) <project.git>\n"
+	exit 1
+fi
+
+readonly REPO_NAME=${1%.git}.git
+readonly REPOSITORY=${GIT_REPO_PATH}/${REPO_NAME}
+
+function repository_dont_exists() {
+    local repository=$1
+    [ ! -e ${repository} ] || \
+        (echo "Repository \"${repository}\" already exists!" && false)
+    return
+}
+
+function create_repository() {
+    local repository=$1
+    mkdir -p "${repository}" && \
+        git --bare init ${repository} > /dev/null
+    return
+}
+
+function print_success() {
+    local repository=$1
+    local repo_name=$(basename $1)
+    echo "Created \"${repo_name}\". Use \"git clone ${USER}@${HOSTNAME}:${repository}\""
+}
+
+repository_dont_exists ${REPOSITORY} && \
+    create_repository ${REPOSITORY} && \
+    print_success ${REPOSITORY}
+

@@ -1,0 +1,13 @@
+#!/bin/sh
+
+readonly CMD_PATH=$(dirname $0)
+readonly COMMANDS=${CMD_PATH}/*
+
+echo "Welcome to git-shell! Available commands:"
+
+for cmd in ${COMMANDS}; do
+    [ -f "${cmd}" ] && \
+        [ -x "${cmd}" ] && \
+        basename "${cmd}"
+done
+

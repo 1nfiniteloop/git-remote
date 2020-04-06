@@ -1,41 +1,45 @@
 # Overview
 
-This is a minimal and simple git remote for hosting and sharing git-repositories. The remote repositories is accesssed through SSH (push/pull). It's possible to initialize and list all repositoris using git-shell through SSH.
+This is a minimal and simple git remote for hosting and sharing git-repositories.
+The remote repositories is accesssed through SSH (push/pull). It's possible to
+initialize and list all repositoris using git-shell through SSH.
 
-# Versions
+## Versions
 
-* `1nfiniteloop/git-remote:latest` from [here](https://github.com/1nfiniteloop/git-remote).
+* `1nfiniteloop/git-remote:latest` from
+  [here](https://github.com/1nfiniteloop/git-remote).
 
-# Volumes
+## Volumes
 
-* /home/git/shared
+* /srv/git
 
-# Ports
+## Ports
 
 * 22
 
-# Environment variables
+## Environment variables
 
 * AUTHORIZED_KEYS
 
-# Author
+## Author
 
 [Lars Gunnarsson](https://github.com/1nfiniteloop)
 
-# License
+## License
 
 MIT
 
-# Usage
+## Usage
 
-1. Provide the login ssh-keys for the user *git* with e.g. `export AUTHORIZED_KEYS=$(cat ~/.ssh/my-git-remote.com/*.pub)`
+1. Provide the login ssh-keys for the user *git* with e.g. 
+   `export AUTHORIZED_KEYS=$(cat ~/.ssh/my-git-remote.com/*.pub)`
 2. Start container:
 ```bash
  docker run \
     --name=git-remote \
     --detach \
     --publish 0.0.0.0:8022:22 \
-    --volume git:/home/git/shared \
+    --volume git:/srv/git \
     --env=AUTHORIZED_KEYS \
     1nfiniteloop/git-remote:latest
 ```
@@ -43,5 +47,5 @@ MIT
 ```bash
 git> init hello-world
 ```
-4. Clone the empty repository with `git clone my-git-remote.com:shared/hello-world.git`.
-
+4. Clone the empty repository with
+   `git clone my-git-remote.com:shared/hello-world.git`.

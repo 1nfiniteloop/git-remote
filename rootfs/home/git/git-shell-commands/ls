@@ -1,5 +1,6 @@
-#!/bin/sh
+#!/bin/bash
 
-source .gitrc
+source .git-shell
+# GIT_STORAGE_PATH
 
-find ${GIT_REPO_PATH} -type d -name "*.git"
+find ${GIT_STORAGE_PATH} -type d -name "*.git" -prune -print

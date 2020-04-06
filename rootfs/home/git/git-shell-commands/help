@@ -1,13 +1,13 @@
-#!/bin/sh
+#!/bin/bash
 
-readonly CMD_PATH=$(dirname $0)
-readonly COMMANDS=${CMD_PATH}/*
+readonly cmd=${0}
+readonly cmd_name=${cmd##*/}
+readonly cmd_path=${cmd%${cmd_name}}
 
-echo "Welcome to git-shell! Available commands:"
+echo -e "Welcome to git-shell! Available commands:\n"
 
-for cmd in ${COMMANDS}; do
-    [ -f "${cmd}" ] && \
-        [ -x "${cmd}" ] && \
-        basename "${cmd}"
+for current_cmd in $(find ${cmd_path} -type f |sort); do
+  if [[ -f "${current_cmd}" ]] && [[ -x "${current_cmd}" ]]; then
+    echo "${current_cmd##*/}"
+  fi
 done
-

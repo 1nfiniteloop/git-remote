@@ -1,7 +1,4 @@
 #!/bin/bash
 
-# Create host keys if not extsts
-ssh-keygen -A
-
 # Don't detach (-D), log to stderr (-e)
 exec /usr/sbin/sshd -D -e

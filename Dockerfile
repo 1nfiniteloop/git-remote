@@ -16,8 +16,11 @@ RUN adduser \
       git \
     && echo "git:git" | chpasswd &> /dev/null \
     && mkdir ${GIT_STORAGE_PATH} \
-    && chown -R git:git ~git ${GIT_STORAGE_PATH} \
-    && echo "GIT_STORAGE_PATH=${GIT_STORAGE_PATH}" > ~git/.git-shell
+    && echo "GIT_STORAGE_PATH=${GIT_STORAGE_PATH}" > ~git/.git-shell \
+    && mkdir -m 700 ~git/.ssh \
+    && touch ~git/.ssh/authorized_keys \
+    && chmod 600 ~git/.ssh/authorized_keys \
+    && chown -R git:git ~git ${GIT_STORAGE_PATH}
 
 VOLUME ${GIT_STORAGE_PATH}
 EXPOSE 22

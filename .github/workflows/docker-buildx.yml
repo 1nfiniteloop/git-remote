@@ -1,0 +1,34 @@
+name: docker-buildx
+
+on:
+  push:
+    branches:
+      - master
+    tags:
+      - v*
+
+jobs:
+  build:
+    name: build and publish docker image
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: checkout
+        uses: actions/checkout@v1
+
+      - name: prepare build
+        env:
+          BUILDX_VER: v0.2.0
+        run: .github/hooks/pre_build
+
+      - name: docker hub login
+        run: docker login --username "${{ secrets.DOCKERHUB_USER }}" --password-stdin <<< "${{ secrets.DOCKERHUB_TOKEN }}"
+
+      - name: build and push
+        env:
+          IMAGE_NAME: 1nfiniteloop/git-remote:latest
+          TARGETS: linux/arm,linux/arm64,linux/amd64
+        run: .github/hooks/build
+
+      - name: docker hub logout
+        run: docker logout

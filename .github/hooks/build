@@ -1,0 +1,9 @@
+#!/bin/bash
+
+export DOCKER_CLI_EXPERIMENTAL=enabled
+
+docker buildx build \
+  --push \
+  --tag ${IMAGE_NAME} \
+  --platform=${TARGETS} \
+  .

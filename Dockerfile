@@ -6,7 +6,7 @@ RUN apk update \
       openssh-server \
     && rm -r /var/cache/apk/*
 
-COPY rootfs /
+COPY overlay /
 
 ARG GIT_STORAGE_PATH=/srv/git
 
@@ -24,4 +24,4 @@ RUN adduser \
 
 VOLUME ${GIT_STORAGE_PATH}
 EXPOSE 22
-CMD ["/bin/s6-svscan", "/etc/s6"]
+CMD ["/bin/s6-svscan", "/etc/services.d"]

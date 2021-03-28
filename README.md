@@ -11,7 +11,7 @@ initialize and list all repositoris using git-shell through SSH.
 
 ## Volumes
 
-* /srv/git
+* `/srv/git`
 
 ## Ports
 
@@ -21,31 +21,22 @@ initialize and list all repositoris using git-shell through SSH.
 
 * AUTHORIZED_KEYS
 
-## Author
-
-[Lars Gunnarsson](https://github.com/1nfiniteloop)
-
-## License
-
-MIT
-
 ## Usage
 
-1. Provide the login ssh-keys for the user *git* with e.g. 
-   `export AUTHORIZED_KEYS=$(cat ~/.ssh/my-git-remote.com/*.pub)`
-2. Start container:
-```bash
- docker run \
-    --name=git-remote \
-    --detach \
-    --publish 0.0.0.0:8022:22 \
-    --volume git:/srv/git \
-    --env=AUTHORIZED_KEYS \
-    1nfiniteloop/git-remote:latest
-```
-3. Initialize a repository on the git-remote with `ssh git@my-git-remote.com`
-```bash
-git> init hello-world
-```
-4. Clone the empty repository with
-   `git clone my-git-remote.com:shared/hello-world.git`.
+1. Start container:
+
+        docker run \
+          --name=git-remote \
+          --detach \
+          --publish 0.0.0.0:8022:22 \
+          --volume git:/srv/git \
+          --volume git-hostkeys:/etc/ssh \
+          --env "AUTHORIZED_KEYS=$(cat authorized_keys.d/*.pub)" \
+          1nfiniteloop/git-remote:latest
+
+2. Initialize a repository on the git-remote with `ssh git@your-domain.com`
+
+        git> init hello-world
+
+3. Clone the empty repository with
+   `git clone git@your-domain.com:/srv/git/hello-world.git`.

@@ -1,7 +1,6 @@
 #!/bin/bash
 
-source .git-shell
-# GIT_STORAGE_PATH
+source .git-shell  # GIT_STORAGE_PATH
 
 readonly cmd=${0}
 readonly cmd_name=${cmd##*/}
@@ -10,32 +9,33 @@ readonly cmd_name=${cmd##*/}
 create_repository()
 {
   local repository="${1}"
-  local repository_name=${repository##*/}
   mkdir -p "${repository}" \
-    && git --bare init ${repository} > /dev/null \
-    && echo "Created \"${repository_name}\"." \
+    && git --bare init --initial-branch=main ${repository} > /dev/null \
+    && echo "Created \"${repository##*/}\"." \
             "Use \"git clone ${USER}@${HOSTNAME}:${repository}\""
 }
 
-normalize_name()
+normalize_path()
 {
-  if [[ -n "${1}" ]]; then
-    local repository="${1}"
-    local repo_without_prefix="${repository#${GIT_STORAGE_PATH}/}"
-    local repo_name_we="${repo_without_prefix%.git}"
-    echo "${GIT_STORAGE_PATH}/${repo_name_we}.git"
-  fi
+  local repository="${1}"
+  local repo_without_prefix="${repository#${GIT_STORAGE_PATH}/}"
+  local repo_name_we="${repo_without_prefix%.git}"
+  echo "${GIT_STORAGE_PATH}/${repo_name_we}.git"
 }
 
 main()
 {
-  local repository="$(normalize_name ${1})"
-  if [[ -z "${repository}" ]]; then
-    echo -e "\n\tUsage: ${cmd_name} <project.git>\n"
-  elif [[ -e "${repository}" ]]; then
-    echo "Repository \"${repository}\" already exists!"
+  if [[ ${#} -gt 0 ]]; then
+    for name in ${@}; do
+      local repository="$(normalize_path ${name})"
+      if [[ -e "${repository}" ]]; then
+        echo "Repository \"${repository}\" already exists!"
+      else
+        create_repository "${repository}"
+      fi
+    done
   else
-    create_repository "${repository}"
+      echo "At least one repo must be provided"
   fi
 }
 

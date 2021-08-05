@@ -2,7 +2,10 @@ name: docker-buildx
 
 on:
   push:
-    branches: master
+    branches:
+      - master
+    tags:
+      - 'v*'
 
 jobs:
   main:
@@ -24,6 +27,18 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USER }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: Generate Docker metadata
+        id: meta
+        uses: crazy-max/ghaction-docker-meta@v2
+        with:
+          images: 1nfiniteloop/git-remote
+          # ref: https://github.com/crazy-max/ghaction-docker-meta
+          tags: |
+            type=ref,event=branch
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=sha
+
       # ref: https://github.com/docker/build-push-action
       - name: Build and push
         uses: docker/build-push-action@v2
@@ -32,5 +47,7 @@ jobs:
           file: ./Dockerfile
           platforms: linux/arm/v7,linux/arm64,linux/amd64
           push: true
-          tags: |
-            1nfiniteloop/git-remote:latest
+          tags: ${{ steps.meta.outputs.tags }}
+          # ref: https://github.com/docker/buildx/blob/master/docs/reference/buildx_build.md#-use-an-external-cache-source-for-a-build---cache-from
+          cache-from: type=registry,ref=1nfiniteloop/git-remote:latest
+          cache-to: type=inline

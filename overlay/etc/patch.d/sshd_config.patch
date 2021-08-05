@@ -1,5 +1,5 @@
---- 2/etc/ssh/sshd_config
-+++ 1/etc/ssh/sshd_config
+--- a/etc/ssh/sshd_config
++++ b/etc/ssh/sshd_config
 @@ -34,7 +34,7 @@
  #MaxAuthTries 6
  #MaxSessions 10
@@ -9,6 +9,17 @@
  
  # The default is to check both .ssh/authorized_keys and .ssh/authorized_keys2
  # but this is overridden so installations will only check .ssh/authorized_keys
+@@ -42,8 +42,8 @@
+ 
+ #AuthorizedPrincipalsFile none
+ 
+-#AuthorizedKeysCommand none
+-#AuthorizedKeysCommandUser nobody
++AuthorizedKeysCommand /usr/local/bin/authorized_keys
++AuthorizedKeysCommandUser nobody
+ 
+ # For this to work you will also need host keys in /etc/ssh/ssh_known_hosts
+ #HostbasedAuthentication no
 @@ -54,7 +54,7 @@
  #IgnoreRhosts yes
  

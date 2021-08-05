@@ -19,7 +19,7 @@ initialize and list all repositoris using git-shell through SSH.
 
 ## Environment variables
 
-* AUTHORIZED_KEYS
+_None_
 
 ## Usage
 
@@ -31,12 +31,17 @@ initialize and list all repositoris using git-shell through SSH.
           --publish 0.0.0.0:8022:22 \
           --volume git:/srv/git \
           --volume git-hostkeys:/etc/ssh \
-          --env "AUTHORIZED_KEYS=$(cat authorized_keys.d/*.pub)" \
+          --volume git-authorized-keys:/home/git/authorized_keys.d:ro \
           1nfiniteloop/git-remote:latest
 
-2. Initialize a repository on the git-remote with `ssh git@your-domain.com`
+2. Add authorized_keys:
+
+        docker cp authorized_keys.d/*.pub git-remote:/home/git/authorized_keys.d
+
+3. Initialize a repository on the git-remote with `ssh git@your-domain.com`
 
         git> init hello-world
 
-3. Clone the empty repository with
-   `git clone git@your-domain.com:/srv/git/hello-world.git`.
+4. Clone the empty repository with
+
+        git clone git@your-domain.com:/srv/git/hello-world.git

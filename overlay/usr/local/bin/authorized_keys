@@ -1,0 +1,5 @@
+#!/bin/bash
+
+for key in $(find /home/${1}/authorized_keys.d -type f -name '*.pub'); do
+  cat "${key}"
+done

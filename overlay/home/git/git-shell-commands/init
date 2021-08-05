@@ -10,7 +10,7 @@ create_repository()
 {
   local repository="${1}"
   mkdir -p "${repository}" \
-    && git --bare init --initial-branch=main ${repository} > /dev/null \
+    && git --bare init ${repository} > /dev/null \
     && echo "Created \"${repository##*/}\"." \
             "Use \"git clone ${USER}@${HOSTNAME}:${repository}\""
 }

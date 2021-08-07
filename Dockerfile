@@ -17,6 +17,7 @@ RUN git config --system init.defaultBranch main \
     && echo "git:*" | chpasswd -e &> /dev/null \
     && ln -s /etc/git-shell-commands /home/git/git-shell-commands
 
+VOLUME /etc/ssh/host_keys
 VOLUME /home/git
 
 EXPOSE 22

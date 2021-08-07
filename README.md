@@ -30,10 +30,10 @@ _None_
           --detach \
           --publish 0.0.0.0:8022:22 \
           --volume git-remote.home:/home/git \
-          --volume git-remote.host-keys:/etc/ssh \
+          --volume git-remote.host-keys:/etc/ssh/host_keys \
           1nfiniteloop/git-remote:latest
 
-2. Add authorized_keys:
+2. Add authorized ssh keys:
 
         docker cp authorized_keys/*.pub git-remote:/home/git/authorized_keys
 

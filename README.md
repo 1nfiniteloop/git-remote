@@ -11,7 +11,7 @@ initialize and list all repositoris using git-shell through SSH.
 
 ## Volumes
 
-* `/srv/git`
+* `/home/git`
 
 ## Ports
 
@@ -29,14 +29,13 @@ _None_
           --name=git-remote \
           --detach \
           --publish 0.0.0.0:8022:22 \
-          --volume git:/srv/git \
-          --volume git-hostkeys:/etc/ssh \
-          --volume git-authorized-keys:/home/git/authorized_keys.d:ro \
+          --volume git-remote.home:/home/git \
+          --volume git-remote.host-keys:/etc/ssh \
           1nfiniteloop/git-remote:latest
 
 2. Add authorized_keys:
 
-        docker cp authorized_keys.d/*.pub git-remote:/home/git/authorized_keys.d
+        docker cp authorized_keys/*.pub git-remote:/home/git/authorized_keys
 
 3. Initialize a repository on the git-remote with `ssh git@your-domain.com`
 
@@ -44,4 +43,4 @@ _None_
 
 4. Clone the empty repository with
 
-        git clone git@your-domain.com:/srv/git/hello-world.git
+        git clone git@your-domain.com:hello-world.git

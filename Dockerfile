@@ -1,25 +1,23 @@
-FROM 1nfiniteloop/alpine:latest
+FROM 1nfiniteloop/alpine:1.0
 
 RUN apk update \
     && apk add --no-cache \
       git \
       openssh-server \
+      tree \
     && rm -r /var/cache/apk/*
 
 COPY overlay /
 
-ARG GIT_STORAGE_PATH=/srv/git
-
 RUN git config --system init.defaultBranch main \
-  && adduser \
-      -D \
-      -s /usr/bin/git-shell \
-      git \
+    && adduser \
+        -D \
+        -s /usr/bin/git-shell \
+        git \
     && echo "git:*" | chpasswd -e &> /dev/null \
-    && mkdir ${GIT_STORAGE_PATH} \
-    && echo "GIT_STORAGE_PATH=${GIT_STORAGE_PATH}" > ~git/.git-shell \
-    && chown -R git:git ~git ${GIT_STORAGE_PATH}
+    && ln -s /etc/git-shell-commands /home/git/git-shell-commands
 
-VOLUME ${GIT_STORAGE_PATH}
+VOLUME /home/git
+
 EXPOSE 22
 CMD ["/bin/s6-svscan", "/etc/services.d"]

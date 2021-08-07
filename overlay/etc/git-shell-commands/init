@@ -1,7 +1,5 @@
 #!/bin/bash
 
-source .git-shell  # GIT_STORAGE_PATH
-
 readonly cmd=${0}
 readonly cmd_name=${cmd##*/}
 
@@ -10,24 +8,22 @@ create_repository()
 {
   local repository="${1}"
   mkdir -p "${repository}" \
-    && git --bare init ${repository} > /dev/null \
+    && git --bare init "${repository}" > /dev/null \
     && echo "Created \"${repository##*/}\"." \
-            "Use \"git clone ${USER}@${HOSTNAME}:${repository}\""
+            "Use \"git clone ${USER}@${HOSTNAME}:${repository##${HOME}/}\""
 }
 
-normalize_path()
+normalize_name()
 {
   local repository="${1}"
-  local repo_without_prefix="${repository#${GIT_STORAGE_PATH}/}"
-  local repo_name_we="${repo_without_prefix%.git}"
-  echo "${GIT_STORAGE_PATH}/${repo_name_we}.git"
+  echo "${repository%.git}.git"
 }
 
 main()
 {
   if [[ ${#} -gt 0 ]]; then
     for name in ${@}; do
-      local repository="$(normalize_path ${name})"
+      local repository="$(normalize_name ${name})"
       if [[ -e "${repository}" ]]; then
         echo "Repository \"${repository}\" already exists!"
       else

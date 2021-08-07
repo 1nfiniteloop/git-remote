@@ -1,0 +1,15 @@
+#!/bin/bash
+
+get_repositories()
+{
+  for repo in $(find ${HOME} -type d -name "*.git" -prune -print |sort); do
+    # remove home prefix from printout
+    echo "${repo##"${HOME}/"}"
+  done
+}
+
+if [[ ${1} == "-t" ]] || [[ ${1} == "--tree" ]]; then
+  get_repositories |tree --fromfile .
+else
+  get_repositories
+fi

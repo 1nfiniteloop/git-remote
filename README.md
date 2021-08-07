@@ -35,6 +35,7 @@ _None_
 
 2. Add authorized ssh keys:
 
+        docker exec -it git-remote mkdir /home/git/authorized_keys
         docker cp authorized_keys/*.pub git-remote:/home/git/authorized_keys
 
 3. Initialize a repository on the git-remote with `ssh git@your-domain.com`
